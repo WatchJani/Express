@@ -2,12 +2,15 @@ package express
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"reflect"
 )
 
 type Express struct {
-	middleware []func(http.HandlerFunc) http.HandlerFunc
-	routes     map[string]map[string]http.HandlerFunc
+	currentRout string
+	middleware  []func(http.HandlerFunc) http.HandlerFunc
+	routes      map[string]map[string]http.HandlerFunc
 }
 
 func New() *Express {
@@ -26,6 +29,19 @@ func (e *Express) GET(path string, handler http.HandlerFunc) {
 	e.addRoute(path, http.MethodGet, handler) // http.MethodGet => "GET"
 }
 
+func (e *Express) PUT(args ...interface{}) *Express {
+	if len(args) == 1 && reflect.TypeOf(args[0]).Kind() == reflect.Func {
+		e.addRoute(e.currentRout, http.MethodPut, args[0].(func(http.ResponseWriter, *http.Request)))
+	} else if len(args) == 2 {
+		path := args[0].(string)
+		handler := args[1].(func(http.ResponseWriter, *http.Request))
+		e.addRoute(path, http.MethodPut, handler)
+	} else {
+		log.Fatal("PUT method requires either a handler function or a path and a handler function")
+	}
+	return e
+}
+
 func (e *Express) addRoute(path string, method string, handler http.HandlerFunc) {
 	if e.routes[path] == nil {
 		e.routes[path] = make(map[string]http.HandlerFunc)
@@ -33,6 +49,13 @@ func (e *Express) addRoute(path string, method string, handler http.HandlerFunc)
 	e.routes[path][method] = handler
 }
 
+func (e *Express) Route(path string) *Express {
+	e.currentRout = path
+
+	return e
+}
+
+// sve se vrti oko ove funkcije
 func (e *Express) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Stvorimo novi http.Handler
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
