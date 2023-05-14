@@ -1,35 +1,24 @@
 package main
 
 import (
-	"net/http"
 	"root/cors"
 	"root/express"
+	"root/routes"
 )
-
-var PORT string = "5000"
-
-func myHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("kondic"))
-}
-
-func myHandlerE(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("janko"))
-}
 
 func main() {
 	app := express.New()
 
 	app.Use(cors.New)
 
-	app.Route("/").PUT(myHandlerE)
-	app.Route("/asdasd").PUT(myHandler)
+	app.Route("/user").
+		GET(routes.GetUser).
+		POST(routes.PostUser).
+		PUT(routes.PutUser).
+		HEAD(routes.PostUser).
+		PATCH(routes.PostUser)
 
-	app.Route("/film").GET(myHandler).POST(myHandler).PUT(myHandlerE)
+	app.GET("/", routes.GetUser)
 
-	app.PUT("/gre", myHandler)
-
-	app.POST("/", myHandler)
-	app.GET("/", myHandlerE)
-
-	app.Listen(PORT)
+	app.Listen("5000")
 }
