@@ -2,9 +2,7 @@ package express
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"reflect"
 )
 
 type Express struct {
@@ -21,24 +19,32 @@ func (e *Express) Use(middleware ...func(http.HandlerFunc) http.HandlerFunc) {
 	e.middleware = append(e.middleware, middleware...)
 }
 
-func (e *Express) POST(path string, handler http.HandlerFunc) {
+func (e *Express) POST(args ...interface{}) *Express {
+	path, handler := Args(e.currentRout, args...)
 	e.addRoute(path, http.MethodPost, handler) //http.MethodPost => "POST"
+	return e
 }
 
-func (e *Express) GET(path string, handler http.HandlerFunc) {
+func (e *Express) GET(args ...interface{}) *Express {
+	path, handler := Args(e.currentRout, args...)
 	e.addRoute(path, http.MethodGet, handler) // http.MethodGet => "GET"
+	return e
+}
+
+// zasto nece da mi prihvati func(http.ResponseWriter, *http.Request) => http.handlerFunc???
+
+// Oprez nema sigurnosti, za argumente
+func Args(curentPath string, args ...interface{}) (string, http.HandlerFunc) {
+	if len(args) == 1 {
+		return curentPath, args[0].(func(http.ResponseWriter, *http.Request))
+	}
+
+	return args[0].(string), args[1].(func(http.ResponseWriter, *http.Request))
 }
 
 func (e *Express) PUT(args ...interface{}) *Express {
-	if len(args) == 1 && reflect.TypeOf(args[0]).Kind() == reflect.Func {
-		e.addRoute(e.currentRout, http.MethodPut, args[0].(func(http.ResponseWriter, *http.Request)))
-	} else if len(args) == 2 {
-		path := args[0].(string)
-		handler := args[1].(func(http.ResponseWriter, *http.Request))
-		e.addRoute(path, http.MethodPut, handler)
-	} else {
-		log.Fatal("PUT method requires either a handler function or a path and a handler function")
-	}
+	path, handler := Args(e.currentRout, args...)
+	e.addRoute(path, http.MethodPut, handler)
 	return e
 }
 
