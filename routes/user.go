@@ -13,3 +13,7 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 func PutUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("PutUsers"))
 }
+
+func Branko(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Cap Branlp"))
+}

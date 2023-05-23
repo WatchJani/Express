@@ -23,7 +23,7 @@ func (e *Express) Use(middleware ...func(http.HandlerFunc) http.HandlerFunc) {
 
 // if you use the Route method, you only put your function (http.HandlerFuncs) as an argument.
 //
-// if you don't use it, you must put path as the private argument and your function
+// if you don't use it, you must put path as the first argument and your function
 // (http.HandlerFuncs) as the second argument!
 func (e *Express) POST(args ...interface{}) *Express {
 	return methodHead(e, http.MethodPost, args)
@@ -31,7 +31,7 @@ func (e *Express) POST(args ...interface{}) *Express {
 
 // if you use the Route method, you only put your function (http.HandlerFuncs) as an argument.
 //
-// if you don't use it, you must put path as the private argument and your function
+// if you don't use it, you must put path as the first argument and your function
 // (http.HandlerFuncs) as the second argument!
 func (e *Express) GET(args ...interface{}) *Express {
 	return methodHead(e, http.MethodGet, args)
@@ -39,7 +39,7 @@ func (e *Express) GET(args ...interface{}) *Express {
 
 // if you use the Route method, you only put your function (http.HandlerFuncs) as an argument.
 //
-// if you don't use it, you must put path as the private argument and your function
+// if you don't use it, you must put path as the first argument and your function
 // (http.HandlerFuncs) as the second argument!
 func (e *Express) PUT(args ...interface{}) *Express {
 	return methodHead(e, http.MethodPut, args)
@@ -47,7 +47,7 @@ func (e *Express) PUT(args ...interface{}) *Express {
 
 // if you use the Route method, you only put your function (http.HandlerFuncs) as an argument.
 //
-// if you don't use it, you must put path as the private argument and your function
+// if you don't use it, you must put path as the first argument and your function
 // (http.HandlerFuncs) as the second argument!
 func (e *Express) DELETE(args ...interface{}) *Express {
 	return methodHead(e, http.MethodDelete, args)
@@ -55,7 +55,7 @@ func (e *Express) DELETE(args ...interface{}) *Express {
 
 // if you use the Route method, you only put your function (http.HandlerFuncs) as an argument.
 //
-// if you don't use it, you must put path as the private argument and your function
+// if you don't use it, you must put path as the first argument and your function
 // (http.HandlerFuncs) as the second argument!
 func (e *Express) PATCH(args ...interface{}) *Express {
 	return methodHead(e, http.MethodPatch, args)
@@ -63,7 +63,7 @@ func (e *Express) PATCH(args ...interface{}) *Express {
 
 // if you use the Route method, you only put your function (http.HandlerFuncs) as an argument.
 //
-// if you don't use it, you must put path as the private argument and your function
+// if you don't use it, you must put path as the first argument and your function
 // (http.HandlerFuncs) as the second argument!
 func (e *Express) HEAD(args ...interface{}) *Express {
 	return methodHead(e, http.MethodHead, args)

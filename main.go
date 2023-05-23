@@ -1,9 +1,9 @@
 package main
 
 import (
-	"root/cors"
-	"root/express"
-	"root/routes"
+	"github.com/WatchJani/Express/cors"
+	"github.com/WatchJani/Express/express"
+	"github.com/WatchJani/Express/routes"
 )
 
 func main() {
