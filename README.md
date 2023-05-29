@@ -32,5 +32,4 @@ func main() {
 
   * Robust routing
   * Focus on high performance
-  * Super-high test coverage
   * Executable for generating applications quickly
